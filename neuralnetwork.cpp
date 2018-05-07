@@ -91,6 +91,12 @@ float NeuralNetwork::Process(std::vector<float> inputs)
     return this->layers[this->layers.size() - 1][0]->last_calculated;
 }
 
+void NeuralNetwork::ClearTrainingSet()
+{
+    std::vector<TrainingSample> new_set;
+    training_set = new_set;
+}
+
 void NeuralNetwork::Train()
 {
     float training_loss = 0;

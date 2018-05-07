@@ -13,6 +13,7 @@ public:
         void AddTrainingSample(TrainingSample sample);
         void Train();
         float DerivativeFromTanh(float value);
+        void ClearTrainingSet();
 
         std::vector<std::vector<Neuron*>> layers;
         std::vector<TrainingSample> training_set;

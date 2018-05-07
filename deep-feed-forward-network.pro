@@ -31,7 +31,8 @@ SOURCES += \
     neuron.cpp \
     inputneuron.cpp \
     neuralnetwork.cpp \
-    trainingdata.cpp
+    trainingdata.cpp \
+    clickablelabel.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,7 +40,8 @@ HEADERS += \
     neuron.h \
     inputneuron.h \
     trainingsample.h \
-    neuralnetwork.h
+    neuralnetwork.h \
+    clickablelabel.h
 
 FORMS += \
         mainwindow.ui

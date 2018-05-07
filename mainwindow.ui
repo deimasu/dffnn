@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>932</width>
-    <height>482</height>
+    <width>320</width>
+    <height>585</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Deep Feed-Forward Neural Network</string>
+   <string>Deep FF Neural Network</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QLabel" name="heatmap_label">
     <property name="geometry">
      <rect>
-      <x>600</x>
-      <y>60</y>
+      <x>10</x>
+      <y>70</y>
       <width>300</width>
       <height>300</height>
      </rect>
@@ -30,13 +30,73 @@
      <string/>
     </property>
    </widget>
+   <widget class="ClickableLabel" name="points_label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>300</width>
+      <height>300</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="data_combobox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>300</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Consolas</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>370</y>
+      <width>301</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QPushButton" name="flush_button">
+       <property name="font">
+        <font>
+         <family>Consolas</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Flush Points</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="color_combobox"/>
+     </item>
+    </layout>
+   </widget>
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>420</y>
-      <width>254</width>
-      <height>61</height>
+      <x>10</x>
+      <y>530</y>
+      <width>301</width>
+      <height>41</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -84,10 +144,10 @@
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>420</y>
-      <width>151</width>
-      <height>61</height>
+      <x>10</x>
+      <y>510</y>
+      <width>301</width>
+      <height>21</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -122,45 +182,76 @@
      </item>
     </layout>
    </widget>
-   <widget class="QLabel" name="points_label">
+   <widget class="QWidget" name="horizontalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>600</x>
-      <y>60</y>
-      <width>300</width>
-      <height>300</height>
+      <x>10</x>
+      <y>450</y>
+      <width>301</width>
+      <height>31</height>
      </rect>
     </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLineEdit" name="lineEdit"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>PushButton</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>420</y>
+      <width>224</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Consolas</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
-     <string/>
+     <string>Edit hidden layers configuration</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="data_combobox">
+   <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>600</x>
-      <y>30</y>
-      <width>300</width>
-      <height>20</height>
+      <x>10</x>
+      <y>0</y>
+      <width>224</width>
+      <height>29</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QComboBox" name="color_combobox">
-    <property name="geometry">
-     <rect>
-      <x>750</x>
-      <y>370</y>
-      <width>150</width>
-      <height>22</height>
-     </rect>
+    <property name="font">
+     <font>
+      <family>Consolas</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Training data type</string>
     </property>
    </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ClickableLabel</class>
+   <extends>QLabel</extends>
+   <header>clickablelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

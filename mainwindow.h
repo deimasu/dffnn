@@ -25,14 +25,13 @@ private slots:
     void on_reset_button_clicked();
     void on_step_button_clicked();
     void on_data_combobox_currentTextChanged(const QString &arg1);
-
-    void on_groupBox_clicked();
+    void on_points_label_clicked(QMouseEvent *event);
+    void on_flush_button_clicked();
 
 private:
-    void mousePressEvent(QMouseEvent *event);
     void UpdateTrainingSet();
     void UpdateHeatmap();
-    void Reset();
+    void Reset(bool);
     QLineSeries *series;
     Ui::MainWindow *ui;
     NeuralNetwork *network;
@@ -41,6 +40,7 @@ private:
     int r, g, b;
     bool playing = false;
     bool setup_finished = false;
+    bool user_definition;
 };
 
 #endif

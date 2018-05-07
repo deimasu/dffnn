@@ -5,6 +5,7 @@
 #include <cmath>
 #include <trainingdata.cpp>
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -20,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->color_combobox->addItem("Red");
     ui->color_combobox->addItem("Blue");
     ui->color_combobox->setVisible(false);
+
+    ui->flush_button->setVisible(false);
 
     // heatmap image
     image = new QImage(100, 100, QImage::Format_RGB32);
@@ -125,7 +128,7 @@ void MainWindow::UpdateTrainingSet()
 
     int x, y, radius = 3;
 
-    for (const auto& sample : set)
+    for (const auto& sample : network->training_set)
     {
         x = sample.inputs[0] * image_points->width();
         y = (1 - sample.inputs[1]) * image_points->height();
@@ -138,6 +141,22 @@ void MainWindow::UpdateTrainingSet()
     }
 
     ui->points_label->setPixmap(QPixmap::fromImage(*image_points).scaled(ui->points_label->width(), ui->points_label->height(), Qt::KeepAspectRatio));
+}
+
+void MainWindow::on_points_label_clicked(QMouseEvent *event)
+{
+    if (!user_definition) return;
+
+    int local_x = event->x();
+    int local_y = event->y();
+
+    float point_x = (float)local_x / ui->points_label->width();
+    float point_y = 1 - (float)local_y / ui->points_label->height();
+
+    network->AddTrainingSample({ { point_x, point_y },
+                                 ui->color_combobox->currentText() == "Red" ? 1.0f : -1.0f });
+
+    UpdateTrainingSet();
 }
 
 void MainWindow::on_play_button_clicked()
@@ -156,9 +175,16 @@ void MainWindow::on_play_button_clicked()
     playing = !playing;
 }
 
-void MainWindow::Reset()
+void MainWindow::Reset(bool save_tr_set = false)
 {
     if (!setup_finished) return;
+
+    std::vector<TrainingSample> saved_set;
+
+    if (save_tr_set)
+    {
+        saved_set = network->training_set;
+    }
 
     delete network;
 
@@ -168,6 +194,14 @@ void MainWindow::Reset()
     timer->stop();
     network = new NeuralNetwork({ 2, 5, 5, 1 });
 
+    if (save_tr_set)
+    {
+        for (const auto& sample : saved_set)
+        {
+            network->AddTrainingSample(sample);
+        }
+    }
+
     UpdateTrainingSet();
 
     UpdateHeatmap();
@@ -176,7 +210,7 @@ void MainWindow::Reset()
 
 void MainWindow::on_reset_button_clicked()
 {
-    Reset();
+    Reset(user_definition);
 }
 
 void MainWindow::on_step_button_clicked()
@@ -187,41 +221,20 @@ void MainWindow::on_step_button_clicked()
     TrainAndUpdate();
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *event)
-{
-    std::cout << "clicked";
-
-    int local_x = event->x();
-    int local_y = event->y();
-
-    if (local_x > ui->points_label->x() &&
-            local_y > ui->points_label->y() &&
-            local_x < ui->points_label->x() + ui->points_label->width() &&
-            local_y < ui->points_label->y() + ui->points_label->height() &&
-            ui->color_combobox->isVisible())
-    {
-        local_x -= ui->points_label->x();
-        local_y -= ui->points_label->y();
-
-        float point_x = (float)local_x / ui->points_label->width();
-        float point_y = 1 - (float)local_y / ui->points_label->height();
-
-        network->AddTrainingSample({ { point_x, point_y },
-                                     ui->color_combobox->currentText() == "Red" ? 1.0f : -1.0f });
-
-        UpdateTrainingSet();
-    }
-}
-
-
-
 void MainWindow::on_data_combobox_currentTextChanged(const QString &combo_text)
 {
-    ui->color_combobox->setVisible(combo_text == "User Defined");
+    user_definition = combo_text == "User Defined";
+    ui->color_combobox->setVisible(user_definition);
+    ui->flush_button->setVisible(user_definition);
     Reset();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_flush_button_clicked()
+{
+    Reset();
 }
