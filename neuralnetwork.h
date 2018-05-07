@@ -22,4 +22,4 @@ public:
 };
 
 
-#endif // NEURALNETWORK_H
+#endif

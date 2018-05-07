@@ -30,7 +30,8 @@ SOURCES += \
     link.cpp \
     neuron.cpp \
     inputneuron.cpp \
-    neuralnetwork.cpp
+    neuralnetwork.cpp \
+    trainingdata.cpp
 
 HEADERS += \
         mainwindow.h \

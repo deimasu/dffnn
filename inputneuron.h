@@ -9,4 +9,4 @@ public:
         void Activation() override;
 };
 
-#endif // INPUTNEURON_H
+#endif

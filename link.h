@@ -9,4 +9,4 @@ public:
     float error;
 };
 
-#endif // LINK_H
+#endif

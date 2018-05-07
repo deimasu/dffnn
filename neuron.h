@@ -18,4 +18,4 @@ public:
     void SendToNextLayer();
 };
 
-#endif // NEURON_H
+#endif

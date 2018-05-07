@@ -22,18 +22,25 @@ public:
 private slots:
     void TrainAndUpdate();
     void on_play_button_clicked();
-    void on_pause_button_clicked();
     void on_reset_button_clicked();
+    void on_step_button_clicked();
+    void on_data_combobox_currentTextChanged(const QString &arg1);
+
+    void on_groupBox_clicked();
 
 private:
-    void UpdateTrainingSet(std::vector<TrainingSample> tr_set);
+    void mousePressEvent(QMouseEvent *event);
+    void UpdateTrainingSet();
     void UpdateHeatmap();
+    void Reset();
     QLineSeries *series;
     Ui::MainWindow *ui;
     NeuralNetwork *network;
     QTimer *timer;
     float value;
     int r, g, b;
+    bool playing = false;
+    bool setup_finished = false;
 };
 
-#endif // MAINWINDOW_H
+#endif

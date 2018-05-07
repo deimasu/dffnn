@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>600</x>
-      <y>30</y>
+      <y>60</y>
       <width>300</width>
       <height>300</height>
      </rect>
@@ -33,13 +33,26 @@
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>330</x>
-      <y>419</y>
-      <width>239</width>
+      <x>320</x>
+      <y>420</y>
+      <width>254</width>
       <height>61</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="step_button">
+       <property name="font">
+        <font>
+         <family>Consolas</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Step</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QPushButton" name="play_button">
        <property name="font">
@@ -50,19 +63,6 @@
        </property>
        <property name="text">
         <string>Play</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pause_button">
-       <property name="font">
-        <font>
-         <family>Consolas</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Pause</string>
        </property>
       </widget>
      </item>
@@ -126,7 +126,7 @@
     <property name="geometry">
      <rect>
       <x>600</x>
-      <y>30</y>
+      <y>60</y>
       <width>300</width>
       <height>300</height>
      </rect>
@@ -136,6 +136,26 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="data_combobox">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>30</y>
+      <width>300</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="color_combobox">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>370</y>
+      <width>150</width>
+      <height>22</height>
+     </rect>
     </property>
    </widget>
   </widget>

@@ -8,4 +8,4 @@ struct TrainingSample {
         float output;
 };
 
-#endif // TRAININGSAMPLE_H
+#endif
