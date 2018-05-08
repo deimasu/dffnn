@@ -27,11 +27,14 @@ private slots:
     void on_data_combobox_currentTextChanged(const QString &arg1);
     void on_points_label_clicked(QMouseEvent *event);
     void on_flush_button_clicked();
+    void on_config_submit_clicked();
 
 private:
+    void DisplayCurrentConfiguration();
     void UpdateTrainingSet();
     void UpdateHeatmap();
-    void Reset(bool);
+    void Reset(bool save_training_set);
+    std::vector<int> current_configuration;
     QLineSeries *series;
     Ui::MainWindow *ui;
     NeuralNetwork *network;

@@ -5,7 +5,6 @@
 #include <cmath>
 #include <trainingdata.cpp>
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -24,6 +23,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->flush_button->setVisible(false);
 
+    ui->help_button->setMinimumWidth(10);
+
     // heatmap image
     image = new QImage(100, 100, QImage::Format_RGB32);
 
@@ -33,8 +34,12 @@ MainWindow::MainWindow(QWidget *parent) :
     // series for training loss graph
     series = new QLineSeries();
 
+    current_configuration = { 2, 5, 5, 1 };
+
     // creating neural network instance
-    network = new NeuralNetwork({ 2, 5, 5, 1 });
+    network = new NeuralNetwork(current_configuration);
+
+    DisplayCurrentConfiguration();
 
     // adding blur effect to heatmap label
     QGraphicsBlurEffect *blur = new QGraphicsBlurEffect();
@@ -143,6 +148,17 @@ void MainWindow::UpdateTrainingSet()
     ui->points_label->setPixmap(QPixmap::fromImage(*image_points).scaled(ui->points_label->width(), ui->points_label->height(), Qt::KeepAspectRatio));
 }
 
+void MainWindow::DisplayCurrentConfiguration()
+{
+    QString config_line = "{ ";
+    for (int i = 0; i < network->layers.size(); i++)
+    {
+        config_line.append(QString::number(network->layers[i].size())).append((i < network->layers.size() - 1) ? ", " : " ");
+    }
+    config_line.append("}");
+    ui->config_display_label->setText(config_line);
+}
+
 void MainWindow::on_points_label_clicked(QMouseEvent *event)
 {
     if (!user_definition) return;
@@ -163,6 +179,17 @@ void MainWindow::on_play_button_clicked()
 {
     if (!playing)
     {
+        if (network->training_set.size() == 0)
+        {
+            QMessageBox box;
+            box.setText("There is no training data");
+            box.setWindowTitle("Warning");
+            box.setIcon(QMessageBox::Warning);
+            box.exec();
+
+            return;
+        }
+
         timer->start();
         ui->play_button->setText("Pause");
     }
@@ -192,7 +219,7 @@ void MainWindow::Reset(bool save_tr_set = false)
     ui->play_button->setText("Play");
 
     timer->stop();
-    network = new NeuralNetwork({ 2, 5, 5, 1 });
+    network = new NeuralNetwork(current_configuration);
 
     if (save_tr_set)
     {
@@ -203,8 +230,8 @@ void MainWindow::Reset(bool save_tr_set = false)
     }
 
     UpdateTrainingSet();
-
     UpdateHeatmap();
+    DisplayCurrentConfiguration();
 }
 
 
@@ -215,6 +242,17 @@ void MainWindow::on_reset_button_clicked()
 
 void MainWindow::on_step_button_clicked()
 {
+    if (network->training_set.size() == 0)
+    {
+        QMessageBox box;
+        box.setText("There is no training data");
+        box.setWindowTitle("Warning");
+        box.setIcon(QMessageBox::Warning);
+        box.exec();
+
+        return;
+    }
+
     timer->stop();
     playing = false;
     ui->play_button->setText("Play");
@@ -237,4 +275,56 @@ MainWindow::~MainWindow()
 void MainWindow::on_flush_button_clicked()
 {
     Reset();
+}
+
+void MainWindow::on_config_submit_clicked()
+{
+    QRegExp rx("[\[]{1}([0-9][ ]*(,[0-9])*)*[\]]{1}");
+    QRegExpValidator v(rx, 0);
+
+    QString text = ui->config_line_edit->text().replace(" ", "");
+    int pos = 0;
+
+    auto result = v.validate(text, pos);
+
+    if (result != QValidator::Acceptable)
+    {
+        QMessageBox box;
+        box.setText("The given configuration doesn't meet the format");
+        box.setWindowTitle("Warning");
+        box.setIcon(QMessageBox::Warning);
+        box.exec();
+        return;
+    }
+
+    QStringList list = text.replace("[", "").replace("]", "").split(",");
+
+    std::vector<int> new_configuration = { 2 };
+
+    if (list.at(0) != "")
+    {
+        for (const auto &item : list)
+        {
+            int neurons_num = item.toInt();
+            if (neurons_num == 0)
+            {
+                QMessageBox box;
+                box.setText("Neurons number cannot be 0");
+                box.setWindowTitle("Warning");
+                box.setIcon(QMessageBox::Warning);
+                box.exec();
+                return;
+            }
+            new_configuration.push_back(item.toInt());
+        }
+    }
+
+    new_configuration.push_back(1);
+
+    delete network;
+
+    network = new NeuralNetwork(new_configuration);
+    current_configuration = new_configuration;
+    Reset(true);
+    ui->config_line_edit->setText("");
 }

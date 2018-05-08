@@ -4,7 +4,7 @@
 ClickableLabel::ClickableLabel(QWidget* parent)
     : QLabel(parent)
 {
-    connect(this, SIGNAL(clicked(QMouseEvent*)) , this, SLOT(MainWindow::on_points_label_clicked()));
+
 }
 
 ClickableLabel::~ClickableLabel()
